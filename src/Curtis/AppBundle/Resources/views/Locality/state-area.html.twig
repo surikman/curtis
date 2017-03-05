@@ -1,0 +1,67 @@
+{% extends '@CurtisTemplate/Layout/base-left-side.html.twig' %}
+
+{% block breadcrumbs %}
+    <header class="main-header">
+        <div class="container">
+            <h1 class="page-title">Lokality</h1>
+
+            <ol class="breadcrumb pull-right">
+                {#<li><a href="#"></a></li>#}
+                <li class="active">{{ stateArea.name }}</li>
+            </ol>
+        </div>
+    </header>
+{% endblock %}
+
+
+{% block body %}
+   velka mapa
+{% endblock %}
+
+{% block sidebar %}
+    <div class="block animated fadeInDown animation-delay-10">
+        <ul class="nav nav-tabs nav-tabs-ar" id="myTab2">
+            <li class="active"><a href="#categories" data-toggle="tab"><i class="fa fa-folder-open"></i></a></li>
+            {#<li><a href="#tags" data-toggle="tab"><i class="fa fa-tags"></i></a></li>#}
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="categories">
+                <h3 class="post-title no-margin-top">Stolice (Župy)</h3>
+                <ul class="simple">
+                    {% for region in stateArea.regions %}
+                        <li><a href="{{ url('locality-region', {'regionId': region.id }) }}">{{ region.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {#<div class="tab-pane" id="tags">#}
+                {#<h3 class="post-title">Tags</h3>#}
+                {#<div class="tags-cloud">#}
+                    {#<a href="#" class="tag">Web</a>#}
+                    {#<a href="#" class="tag">Artificial Intelligence</a>#}
+                    {#<a href="#" class="tag">Programing</a>#}
+                    {#<a href="#" class="tag">Design</a>#}
+                    {#<a href="#" class="tag">3D</a>#}
+                    {#<a href="#" class="tag">Games</a>#}
+                    {#<a href="#" class="tag">Resources</a>#}
+                    {#<a href="#" class="tag">2D</a>#}
+                    {#<a href="#" class="tag">C++</a>#}
+                    {#<a href="#" class="tag">Jquery</a>#}
+                    {#<a href="#" class="tag">Javascript</a>#}
+                    {#<a href="#" class="tag">Library</a>#}
+                    {#<a href="#" class="tag">Windows</a>#}
+                    {#<a href="#" class="tag">Linux</a>#}
+                    {#<a href="#" class="tag">Cloud</a>#}
+                    {#<a href="#" class="tag">Game developer</a>#}
+                    {#<a href="#" class="tag">Server</a>#}
+                    {#<a href="#" class="tag">Google</a>#}
+                    {#<a href="#" class="tag">Bootstrap</a>#}
+                    {#<a href="#" class="tag">Less</a>#}
+                    {#<a href="#" class="tag">Sass</a>#}
+                    {#<a href="#" class="tag">Engine</a>#}
+                    {#<a href="#" class="tag">Node.js</a>#}
+                {#</div>#}
+            {#</div>#}
+        </div> <!-- tab-content -->
+    </div>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends '@CurtisTemplate/Layout/base-left-side.html.twig' %}
+
+{% block breadcrumbs %}
+    <header class="main-header">
+        <div class="container">
+            <h1 class="page-title">Lokality</h1>
+
+            <ol class="breadcrumb pull-right">
+                <li>
+                    <a href="{{ url('locality-state-area', {'stateArea': region.stateArea.urlKey }) }}">{{ region.stateArea.name }}</a>
+                </li>
+                <li class="active">{{ region.name }}</li>
+            </ol>
+        </div>
+    </header>
+{% endblock %}
+
+
+{% block body %}
+    {% for innerPlace in region.unlockedPlaces %}
+        {% if loop.index % 2 == 0 %}
+            {% set box_type = 'primary' %}
+            {% set button_type = 'default' %}
+        {% else %}
+            {% set box_type = 'default' %}
+            {% set button_type = 'primary' %}
+        {% endif %}
+        <div class="content-box box-{{ box_type }}">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="{{ asset('bundles/curtisapp/img/kosihy.jpg') }}" alt="" class="img-responsive">
+                </div>
+                <div class="col-md-8">
+                    <h4 class="content-box-title">{{ innerPlace.name }}</h4>
+                    <p>{{ innerPlace.description }}</p>
+                    <a href="{{ url('locality-place', {'placeId': innerPlace.id}) }}"
+                       class="btn btn-ar btn-{{ button_type }}">Čítať viac</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block sidebar %}
+    <div class="block animated fadeInDown animation-delay-10">
+        <ul class="nav nav-tabs nav-tabs-ar" id="myTab2">
+            <li class="active"><a href="#categories" data-toggle="tab"><i class="fa fa-folder-open"></i></a></li>
+            {#<li><a href="#tags" data-toggle="tab"><i class="fa fa-tags"></i></a></li>#}
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="categories">
+                <h3 class="post-title no-margin-top">Stolice (Župy)</h3>
+                <ul class="simple">
+                    {% for globalRegion in region.stateArea.regions %}
+                        <li>
+                            <a href="{{ url('locality-region', {'regionId': globalRegion.id }) }}">{{ globalRegion.name }}</a>
+                            {% if globalRegion.id == region.id %}
+                                <ul>
+                                    {% for globalPlace in globalRegion.places %}
+                                        <li>
+                                            <a href="{{ url('locality-place', {'placeId': globalPlace.id}) }}">
+                                                {% if globalPlace.isLocked %}
+                                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                                {% endif %}
+                                                {{ globalPlace.name }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {#<div class="tab-pane" id="tags">#}
+            {#<h3 class="post-title">Tags</h3>#}
+            {#<div class="tags-cloud">#}
+            {#<a href="#" class="tag">Web</a>#}
+            {#<a href="#" class="tag">Artificial Intelligence</a>#}
+            {#<a href="#" class="tag">Programing</a>#}
+            {#<a href="#" class="tag">Design</a>#}
+            {#<a href="#" class="tag">3D</a>#}
+            {#<a href="#" class="tag">Games</a>#}
+            {#<a href="#" class="tag">Resources</a>#}
+            {#<a href="#" class="tag">2D</a>#}
+            {#<a href="#" class="tag">C++</a>#}
+            {#<a href="#" class="tag">Jquery</a>#}
+            {#<a href="#" class="tag">Javascript</a>#}
+            {#<a href="#" class="tag">Library</a>#}
+            {#<a href="#" class="tag">Windows</a>#}
+            {#<a href="#" class="tag">Linux</a>#}
+            {#<a href="#" class="tag">Cloud</a>#}
+            {#<a href="#" class="tag">Game developer</a>#}
+            {#<a href="#" class="tag">Server</a>#}
+            {#<a href="#" class="tag">Google</a>#}
+            {#<a href="#" class="tag">Bootstrap</a>#}
+            {#<a href="#" class="tag">Less</a>#}
+            {#<a href="#" class="tag">Sass</a>#}
+            {#<a href="#" class="tag">Engine</a>#}
+            {#<a href="#" class="tag">Node.js</a>#}
+            {#</div>#}
+            {#</div>#}
+        </div> <!-- tab-content -->
+    </div>
+{% endblock %}

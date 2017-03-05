@@ -1,0 +1,63 @@
+{% extends '@CurtisTemplate/Layout/base-right-side.html.twig' %}
+
+
+{% block breadcrumbs %}
+    <header class="main-header">
+        <div class="container">
+            <h1 class="page-title">Témy</h1>
+
+            <ol class="breadcrumb pull-right">
+                <li>
+                    <a href="{{ url('theme-category', {'category': theme.category.urlKey }) }}">{{ theme.category.name }}</a>
+                </li>
+                <li class="active">{{ theme.name }}</li>
+            </ol>
+        </div>
+    </header>
+{% endblock %}
+
+
+{% block sidebar %}
+    <div class="block animated fadeInDown animation-delay-10">
+        <ul class="nav nav-tabs nav-tabs-ar" id="myTab2">
+            <li class="active"><a href="#categories" data-toggle="tab"><i class="fa fa-folder-open"></i></a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="categories">
+                <h3 class="post-title no-margin-top">Tematické okruhy</h3>
+                <ul class="simple">
+                    {% for globalCategory in allCategories %}
+                        <li>
+                            <a href="{{ url('theme-category', {'category': globalCategory.urlKey}) }}">{{ globalCategory.name }}</a>
+                            {% if globalCategory.id == theme.category.id %}
+                                <ul>
+                                    {% for globalTheme in globalCategory.themes %}
+                                        <li>
+                                            <a {% if globalTheme.id == theme.id %}class="active"{% endif %} href="{{ url('theme-item', {'themeId': globalTheme.id}) }}">
+                                                {% if globalTheme.id == theme.id %}
+                                                    <i class="glyphicon glyphicon-book" aria-hidden="true"></i>
+                                                {% endif %}
+                                                {% if globalTheme.isLocked %}
+                                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                                {% endif %}
+                                                {{ globalTheme.name }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div> <!-- tab-content -->
+    </div>
+{% endblock %}
+
+
+{% block body %}
+    <section>
+        <h2 class="page-header no-margin-top">{{ theme.name }}</h2>
+        {{ theme.text|raw|nl2br }}
+    </section>
+{% endblock %}

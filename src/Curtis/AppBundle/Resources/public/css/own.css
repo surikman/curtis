@@ -1,0 +1,15 @@
+.navbar-default .navbar-brand {
+    background-image: url('../img/logo-header.png');
+}
+
+#header-full {
+    background-image: url('../img/back.png');
+}
+
+.wrap-primary {
+    background-color: rgba(106, 55, 0, 0.5);
+}
+
+ul.simple li ul li a.active {
+    border-color: #000;
+}

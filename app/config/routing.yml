@@ -1,3 +1,7 @@
+default:
+    resource: "@CurtisTemplateBundle/Controller/"
+    type:     annotation
+
 app:
-    resource: "@AppBundle/Controller/"
+    resource: "@CurtisAppBundle/Controller/"
     type:     annotation

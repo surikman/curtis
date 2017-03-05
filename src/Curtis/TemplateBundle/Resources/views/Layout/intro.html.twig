@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Curtis</title>
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v1"/>
+
+    <meta name="description" content="">
+
+    <!-- CSS -->
+    <link href="{{ asset('bundles/curtistemplate/css/preload.css') }}" rel="stylesheet">
+
+
+    <link href="{{ asset('bundles/curtistemplate/css/vendors.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/curtistemplate/css/syntaxhighlighter/shCore.css') }}" rel="stylesheet">
+
+
+    <link href="{{ asset('bundles/curtistemplate/css/style-orange2.css') }}" rel="stylesheet" media="screen"
+          title="default">
+    <link href="{{ asset('bundles/curtistemplate/css/width-full.css') }}" rel="stylesheet" title="default">
+
+    <link href="{{ asset('bundles/curtisapp/css/own.css') }}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="{{ asset('bundles/curtistemplate/js/html5shiv.min.js') }}"></script>
+    <script src="{{ asset('bundles/curtistemplate/js/respond.min.js') }}"></script>
+    <![endif]-->
+</head>
+
+<!-- Preloader -->
+<div id="preloader">
+    <div id="status">&nbsp;</div>
+</div>
+
+<body>
+
+<div class="sb-site-container">
+    <div class="boxed">
+
+        {% include '@CurtisTemplate/Layout/navigation.html.twig' %}
+
+
+        <header id="header-full">
+            <div class="wrap-primary">
+                <div class="container">
+                    <h1 class="head-title animated fadeInDown animation-delay-12">curtis</h1>
+                    <img src="{{ asset('bundles/curtisapp/img/logo-intro.png') }}" alt=""
+                         class="aligncenter animated fadeInUp animation-delay-10">
+                    <h2 class="secondary-color text-center head-subtitle animated fadeInUp animation-delay-14">malé
+                        stredoveké opevnenia</h2>
+                    <p class="lead text-center animated fadeInUp animation-delay-14">
+                        Prinášame vám poznatky o špecifickej a veľmi variabilnej skupine malých opevnených sídiel zo
+                        stredoveku.<br/>
+                        Objavujte neznámu kapitolu stredovekej architektúry.</p>
+                    <div class="head-full-logo row header-full-icons text-center">
+                        <div class="col-sm-3 animated fadeInDown animation-delay-15">
+                            <span class="icon-ar icon-ar-circle icon-ar-xl-lg icon-ar-white icon-ar-inverse">
+                                <i class="fa fa-cube"></i></span>
+                            <h3>3D rekonštrukcie</h3>
+                        </div>
+                        <div class="col-sm-3 animated fadeInDown animation-delay-18">
+                            <span class="icon-ar icon-ar-circle icon-ar-xl-lg icon-ar-white icon-ar-inverse">
+                                <i class="fa fa-hand-o-up"></i></span>
+                            <h3>Virtuálne prezentácie</h3>
+                        </div>
+                        <div class="col-sm-3 animated fadeInDown animation-delay-21">
+                            <span class="icon-ar icon-ar-circle icon-ar-xl-lg icon-ar-white icon-ar-inverse"><i
+                                        class="fa fa-database"></i></span>
+                            <h3>Databáza lokalít</h3>
+                        </div>
+                        <div class="col-sm-3 animated fadeInDown animation-delay-24">
+                            <span class="icon-ar icon-ar-circle icon-ar-xl-lg icon-ar-white icon-ar-inverse">
+                                <i class="glyphicon glyphicon-tower"></i></span>
+                            <h3>Materiálna kultúra</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="wrap-dark-color">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7 feature-container">
+                        <a href="{{ url('locality-overview') }}" class="feature-icon">
+                            <i class="glyphicon glyphicon-globe"></i>
+                            <h4>Slovensko</h4>
+                        </a>
+                        <a href="{{ url('locality-state-area', {'stateArea': 'zapadne-slovensko'}) }}" class="feature-icon">
+                            <i class="fa fa-map-marker"></i>
+                            <h4>Západné</h4>
+                        </a>
+                        <a  href="javascript:void(0);" class="feature-icon">
+                            <i class="fa fa-map-marker"></i>
+                            <h4>Stredné</h4>
+                        </a>
+                        <a  href="javascript:void(0);" class="feature-icon">
+                            <i class="fa fa-map-marker"></i>
+                            <h4>Východné</h4>
+                        </a>
+                    </div>
+                    <div class="col-md-5 hidden-sm hidden-xs">
+                        <p class="lead text-center">
+                            Katalóg je radený abecedne podľa historických stolíc. Databáza je obohatená množstvom
+                            aktuálnych fotografií.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div> <!-- boxed -->
+</div> <!-- sb-site -->
+
+<script src="{{ asset('bundles/curtistemplate/js/vendors.js') }}"></script>
+
+<!-- Syntaxhighlighter -->
+<script src="{{ asset('bundles/curtistemplate/js/syntaxhighlighter/shCore.js') }}"></script>
+<script src="{{ asset('bundles/curtistemplate/js/syntaxhighlighter/shBrushXml.js') }}"></script>
+<script src="{{ asset('bundles/curtistemplate/js/syntaxhighlighter/shBrushJScript.js') }}"></script>
+
+<script src="{{ asset('bundles/curtistemplate/js/DropdownHover.js') }}"></script>
+<script src="{{ asset('bundles/curtistemplate/js/app.js') }}"></script>
+<script src="{{ asset('bundles/curtistemplate/js/holder.js') }}"></script>
+<script src="{{ asset('bundles/curtistemplate/js/home_full.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<nav class="navbar navbar-default navbar-dark yamm navbar-static-top" role="navigation" id="header">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Navigácia</span>
+                <i class="fa fa-bars"></i>
+            </button>
+            <a id="ar-brand" class="navbar-brand" href="{{ url("home_page") }}">curtis, curia,
+                <span>castellum</span></a>
+        </div> <!-- navbar-header -->
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="tab-pane">
+                    <a href="{{ path('theme-category', {'category': 'male-opevnenia-stredoveku'}) }}">Malé opevnenia stredoveku</a>
+                </li>
+                <li class="tab-pane">
+                    <a href="javascript:void(0);">Územie strednej Európy</a>
+                </li>
+                <li class="tab-pane">
+                    <a href="javascript:void(0);">Terminológia</a>
+                </li>
+                <li class="tab-pane">
+                    <a href="javascript:void(0);">Vývoj</a>
+                </li>
+                <li class="tab-pane">
+                    <a href="javascript:void(0);"><i class="fa fa-lock" aria-hidden="true"></i> Galéria</a>
+                </li>
+            </ul>
+        </div><!-- navbar-collapse -->
+    </div><!-- container -->
+</nav>

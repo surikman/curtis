@@ -1,38 +1,8 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <title>Curtis</title>
-
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v1"/>
-
-    <meta name="description" content="">
-
-    <!-- CSS -->
-    <link href="{{ asset('bundles/curtistemplate/css/preload.css') }}" rel="stylesheet">
-
-
-    <link href="{{ asset('bundles/curtistemplate/css/vendors.css') }}" rel="stylesheet">
-    <link href="{{ asset('bundles/curtistemplate/css/syntaxhighlighter/shCore.css') }}" rel="stylesheet">
-
-
-    <link href="{{ asset('bundles/curtistemplate/css/style-orange2.css') }}" rel="stylesheet" media="screen"
-          title="default">
-    <link href="{{ asset('bundles/curtistemplate/css/width-full.css') }}" rel="stylesheet" title="default">
-
-    <link href="{{ asset('bundles/curtisapp/css/own.css') }}" rel="stylesheet">
-
+    {% include '@CurtisTemplate/Layout/styles.html.twig' %}
     {% block stylesheet %}{% endblock %}
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="{{ asset('bundles/curtistemplate/js/html5shiv.min.js') }}"></script>
-    <script src="{{ asset('bundles/curtistemplate/js/respond.min.js') }}"></script>
-    <![endif]-->
 </head>
 
 <!-- Preloader -->

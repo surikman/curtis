@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Curtis" default="build" basedir=".">
+
+    <!-- ............................................................................................................... -->
+
+    <!-- properties -->
+
+    <property environment="shell"/>
+    <property name="CONSOLE" value="bin/console"/>
+    <property name="CACHE" value="var/cache"/>
+
+    <condition property="BAT_EXTENSION" value=".bat" else="">
+        <os family="windows"/>
+    </condition>
+
+    <condition property="CMD_EXTENSION" value=".cmd" else="">
+        <os family="windows"/>
+    </condition>
+
+    <condition property="ENV" value="dev" else="${shell.SYMFONY_ENV}">
+        <equals arg1="${shell.SYMFONY_ENV}" arg2="$${shell.SYMFONY_ENV}"/>
+    </condition>
+
+    <condition property="composer.nodev.flag" value="--no-dev" else="">
+        <or>
+            <equals arg1="${ENV}" arg2="prod"/>
+            <equals arg1="${ENV}" arg2="test"/>
+        </or>
+    </condition>
+
+    <!-- end properties -->
+
+    <!-- ............................................................................................................... -->
+    <!-- entry points:
+
+        > build:
+            - build-backend
+                - symfony-remove-cache
+                - composer
+                - composer-locatool
+                - doctrine-migrations
+                - doctrine-cache-clear
+                - locatool-generate
+            - build-frontend
+                - nothing
+            - assets
+                - assets-install
+                - assetic-dump
+
+    -->
+
+    <target name="build"
+            depends="php-version,build-backend"
+            description="Default build task."/>
+
+    <target name="build-jenkins"
+            depends="build"
+            description="Default build task."/>
+
+    <target name="build-with-checks"
+            depends="build,build-checks"
+            description="Default build task with code check"/>
+
+    <!-- end entry points -->
+
+    <target name="build-backend"
+            depends="symfony-remove-cache,composer,doctrine-cache-clear"
+            description="Backend processes."/>
+
+    <target name="build-checks"
+            depends="prepare,lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci"
+            description="Checks the code, coding standards, code metrics..."/>
+
+    <!-- .... commands ................................................................................................. -->
+
+    <target name="php-version" description="Check PHP version.">
+        <exec executable="php" failonerror="true">
+            <arg value="-v"/>
+        </exec>
+    </target>
+
+    <!-- composer -->
+
+    <target name="composer" description="Install composer dependencies.">
+        <exec executable="composer${BAT_EXTENSION}" failonerror="true">
+            <env key="SYMFONY_ENV" value="${ENV}"/>
+            <arg value="-o"/>
+            <arg value="install"/>
+            <arg line="${composer.nodev.flag}"/>
+        </exec>
+    </target>
+
+    <!-- end composer -->
+
+    <!-- cache -->
+
+    <target name="symfony-remove-cache" description="Remove cache.">
+        <delete includeemptydirs="true">
+            <fileset dir="${CACHE}/" includes="**/*"/>
+        </delete>
+        <touch file="${CACHE}/.gitkeep"/>
+    </target>
+
+    <target name="symfony-cache-clear" description="Execute Cache Clear command.">
+        <exec executable="php" failonerror="true">
+            <arg value="${CONSOLE}"/>
+            <arg value="cache:clear"/>
+            <arg value="--no-interaction"/>
+            <arg value="--env=${ENV}"/>
+        </exec>
+    </target>
+
+    <target name="doctrine-cache-clear" description="Clear Doctrine caches.">
+        <exec executable="php" failonerror="true">
+            <arg value="${CONSOLE}"/>
+            <arg value="doctrine:cache:clear-metadata"/>
+            <arg value="--env=${ENV}"/>
+        </exec>
+        <exec executable="php" failonerror="true">
+            <arg value="${CONSOLE}"/>
+            <arg value="doctrine:cache:clear-query"/>
+            <arg value="--env=${ENV}"/>
+        </exec>
+        <exec executable="php" failonerror="true">
+            <arg value="${CONSOLE}"/>
+            <arg value="doctrine:cache:clear-result"/>
+            <arg value="--env=${ENV}"/>
+        </exec>
+    </target>
+
+    <!-- end cache -->
+
+    <!-- build-checks -->
+
+    <target name="clean" unless="clean.done" description="Cleanup build artifacts">
+        <delete dir="build/api"/>
+        <delete dir="build/coverage"/>
+        <delete dir="build/logs"/>
+        <delete dir="build/pdepend"/>
+        <delete dir="build/phpdox"/>
+        <property name="clean.done" value="true"/>
+    </target>
+
+    <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build">
+        <mkdir dir="build/api"/>
+        <mkdir dir="build/coverage"/>
+        <mkdir dir="build/logs"/>
+        <mkdir dir="build/pdepend"/>
+        <mkdir dir="build/phpdox"/>
+        <property name="prepare.done" value="true"/>
+    </target>
+
+    <target name="lint" description="Perform syntax check of sourcecode files">
+        <apply executable="php" failonerror="true">
+            <arg value="-l"/>
+            <fileset dir="src">
+                <include name="**/*.php"/>
+                <exclude name="tests/**"/>
+                <exclude name="**/tests/**"/>
+                <exclude name="**/**/tests/**"/>
+                <modified/>
+            </fileset>
+        </apply>
+    </target>
+
+    <target name="phploc-ci" depends="prepare"
+            description="Measure project size using PHPLOC and log result in CSV and XML format. Intended for usage within a continuous integration environment.">
+        <exec executable="phploc">
+            <arg value="--count-tests"/>
+            <arg value="--log-csv"/>
+            <arg path="build/logs/phploc.csv"/>
+            <arg value="--log-xml"/>
+            <arg path="build/logs/phploc.xml"/>
+            <arg path="src"/>
+        </exec>
+    </target>
+
+    <target name="pdepend" depends="prepare"
+            description="Calculate software metrics using PHP_Depend and log result in XML format. Intended for usage within a continuous integration environment.">
+        <exec executable="pdepend">
+            <arg value="--ignore=tests,docs"/>
+            <arg value="--jdepend-xml=build/logs/jdepend.xml"/>
+            <arg value="--jdepend-chart=build/pdepend/dependencies.svg"/>
+            <arg value="--overview-pyramid=build/pdepend/overview-pyramid.svg"/>
+            <arg path="src"/>
+        </exec>
+    </target>
+
+    <target name="phpmd-ci" depends="prepare"
+            description="Perform project mess detection using PHPMD and log result in XML format. Intended for usage within a continuous integration environment.">
+        <exec executable="phpmd">
+            <arg path="src"/>
+            <arg value="xml"/>
+            <arg path="bin/static_analysis/phpmd.ruleset.xml"/>
+            <arg value="--reportfile"/>
+            <arg path="build/logs/pmd.xml"/>
+        </exec>
+    </target>
+
+    <target name="phpcs-ci" depends="prepare"
+            description="Find coding standard violations using PHP_CodeSniffer and log result in XML format. Intended for usage within a continuous integration environment.">
+        <exec executable="phpcs" output="/dev/null">
+            <arg value="--report=checkstyle"/>
+            <arg value="--report-file=build/logs/checkstyle.xml"/>
+            <arg value="--standard=bin/static_analysis/phpcs.ruleset.xml"/>
+            <arg value="--extensions=php"/>
+            <arg value="--ignore=autoload.php"/>
+            <arg path="src"/>
+        </exec>
+    </target>
+
+    <target name="phpcpd-ci" depends="prepare"
+            description="Find duplicate code using PHPCPD and log result in XML format. Intended for usage within a continuous integration environment.">
+        <exec executable="phpcpd">
+            <arg path="src"/>
+            <arg value="--log-pmd"/>
+            <arg path="build/logs/pmd-cpd.xml"/>
+            <arg value="--names-exclude"/>
+            <arg path="*Test.php,*Tester.php"/>
+        </exec>
+    </target>
+
+    <!-- end  build-checks -->
+
+</project>

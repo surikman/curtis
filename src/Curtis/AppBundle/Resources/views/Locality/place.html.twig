@@ -1,9 +1,70 @@
 {% extends '@CurtisTemplate/Layout/base-right-side.html.twig' %}
 
+
+{% block stylesheet %}
+    <style>
+        [data-editable] iframe,
+        [data-editable] image,
+        [data-editable] [data-ce-tag=img],
+        [data-editable] img,
+        [data-editable] video {
+            clear: both;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 100%;
+        }
+
+        /* Left align */
+        [data-editable] .align-left {
+            clear: initial;
+            float: left;
+            margin-right: 0.5em;
+        }
+
+        /* Right align */
+        [data-editable] .align-right {
+            clear: initial;
+            float: right;
+            margin-left: 0.5em;
+        }
+
+        /* Alignment styles for text in editable regions */
+        [data-editable] .text-center {
+            text-align: center;
+        }
+
+        [data-editable] .text-left {
+            text-align: left;
+        }
+
+        [data-editable] .text-right {
+            text-align: right;
+        }
+    </style>
+{% endblock %}
+
 {% block breadcrumbs %}
     <header class="main-header">
         <div class="container">
             <h1 class="page-title">Lokality</h1>
+
+            {% if is_granted("ROLE_ADMIN") %}
+                <a href="{{ path('admin-locality-create-place', {'id': place.region.id}) }}">
+                    <span class="icon-ar icon-ar-inverse icon-ar-circle">
+                        <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                    </span>
+                </a>
+                <a href="{{ path('admin-locality-toggle-lock-place', {'id': place.id}) }}">
+                    <span class="icon-ar icon-ar-inverse icon-ar-circle">
+                        {% if place.isLocked %}
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        {% else %}
+                            <i class="fa fa-unlock" aria-hidden="true"></i>
+                        {% endif %}
+                    </span>
+                </a>
+            {% endif %}
 
             <ol class="breadcrumb pull-right">
                 <li>
@@ -12,7 +73,7 @@
                 <li>
                     <a href="{{ url('locality-region', {'regionId': place.region.id }) }}">{{ place.region.name }}</a>
                 </li>
-                <li class="active">{{ place.name }}</li>
+                <li class="active">{{ place.name|raw }}</li>
             </ol>
         </div>
     </header>
@@ -21,8 +82,13 @@
 
 {% block body %}
     <section>
-        <h2 class="page-header no-margin-top">{{ place.name }}</h2>
-        {{ place.text|raw|nl2br }}
+        <div data-editable data-name="name">
+            <h2 class="page-header no-margin-top">{{ place.name }}</h2>
+        </div>
+
+        <div data-editable data-name="text">
+            {{ place.text|raw }}
+        </div>
     </section>
 {% endblock %}
 
@@ -43,14 +109,15 @@
                                 <ul>
                                     {% for globalPlace in globalRegion.places %}
                                         <li>
-                                            <a {% if globalPlace.id == place.id %}class="active"{% endif %} href="{{ url('locality-place', {'placeId': globalPlace.id}) }}">
+                                            <a {% if globalPlace.id == place.id %}class="active"{% endif %}
+                                               href="{{ url('locality-place', {'id': globalPlace.id}) }}">
                                                 {% if globalPlace.id == place.id %}
                                                     <i class="fa fa-map-marker" aria-hidden="true"></i>
                                                 {% endif %}
                                                 {% if globalPlace.isLocked %}
                                                     <i class="fa fa-lock" aria-hidden="true"></i>
                                                 {% endif %}
-                                                {{ globalPlace.name }}
+                                                {{ globalPlace.name|raw }}
                                             </a>
                                         </li>
                                     {% endfor %}
@@ -91,4 +158,12 @@
             {#</div>#}
         </div> <!-- tab-content -->
     </div>
+{% endblock %}
+{% block javascript %}
+    {% if is_granted("ROLE_ADMIN") %}
+        <script type="text/javascript">
+            editUrl = "{{ path('admin-locality-place-update', {'placeId': place.id }) }}";
+        </script>
+        <script type="text/javascript" src="{{ asset('bundles/curtistemplate/js/editor/editor-place.js') }}"></script>
+    {% endif %}
 {% endblock %}

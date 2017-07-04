@@ -43,18 +43,7 @@
 </div>
 
 {% block javascript %}{% endblock %}
-<script src="{{ asset('bundles/curtistemplate/js/vendors.js') }}"></script>
-
-<!-- Syntaxhighlighter -->
-<script src="{{ asset('bundles/curtistemplate/js/syntaxhighlighter/shCore.js') }}"></script>
-<script src="{{ asset('bundles/curtistemplate/js/syntaxhighlighter/shBrushXml.js') }}"></script>
-<script src="{{ asset('bundles/curtistemplate/js/syntaxhighlighter/shBrushJScript.js') }}"></script>
-
-<script src="{{ asset('bundles/curtistemplate/js/DropdownHover.js') }}"></script>
-<script src="{{ asset('bundles/curtistemplate/js/app.js') }}"></script>
-<script src="{{ asset('bundles/curtistemplate/js/holder.js') }}"></script>
-<script src="{{ asset('bundles/curtistemplate/js/home_full.js') }}"></script>
-
+{% include '@CurtisTemplate/Layout/javascript.html.twig' %}
 </body>
 
 </html>

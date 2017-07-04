@@ -1,4 +1,5 @@
-{% extends '@CurtisTemplate/Layout/base-left-side.html.twig' %}
+{% extends '@CurtisTemplate/Layout/base-right-side.html.twig' %}
+
 
 {% block breadcrumbs %}
     <header class="main-header">
@@ -7,38 +8,23 @@
 
             <ol class="breadcrumb pull-right">
                 <li>
-                    <a href="{{ url('locality-state-area', {'stateArea': region.stateArea.urlKey }) }}">{{ region.stateArea.name }}</a>
+                    <a href="{{ url('locality-state-area', {'stateArea': place.region.stateArea.urlKey }) }}">{{ place.region.stateArea.name }}</a>
                 </li>
-                <li class="active">{{ region.name }}</li>
+                <li>
+                    <a href="{{ url('locality-region', {'regionId': place.region.id }) }}">{{ place.region.name }}</a>
+                </li>
+                <li class="active">{{ place.name|raw }}</li>
             </ol>
         </div>
     </header>
 {% endblock %}
 
-
 {% block body %}
-    {% for innerPlace in region.unlockedPlaces %}
-        {% if loop.index % 2 == 0 %}
-            {% set box_type = 'primary' %}
-            {% set button_type = 'default' %}
-        {% else %}
-            {% set box_type = 'default' %}
-            {% set button_type = 'primary' %}
-        {% endif %}
-        <div class="content-box box-{{ box_type }}">
-            <div class="row">
-                {#<div class="col-md-4">#}
-                    {#<img src="{{ asset('bundles/curtisapp/img/kosihy.jpg') }}" alt="" class="img-responsive">#}
-                {#</div>#}
-                <div class="col-md-12">
-                    <h4 class="content-box-title">{{ innerPlace.name }}</h4>
-                    <p>{{ innerPlace.text|striptags|truncate(200) }}</p>
-                    <a href="{{ url('locality-place', {'id': innerPlace.id}) }}"
-                       class="btn btn-ar btn-{{ button_type }}">Čítať viac</a>
-                </div>
-            </div>
+    <section>
+        <div data-editable data-name="name">
+            <h2 class="page-header no-margin-top">{{ place.name }}</h2>
         </div>
-    {% endfor %}
+    </section>
 {% endblock %}
 
 {% block sidebar %}
@@ -51,18 +37,22 @@
             <div class="tab-pane active" id="categories">
                 <h3 class="post-title no-margin-top">Stolice (Župy)</h3>
                 <ul class="simple">
-                    {% for globalRegion in region.stateArea.regions %}
+                    {% for globalRegion in place.region.stateArea.regions %}
                         <li>
                             <a href="{{ url('locality-region', {'regionId': globalRegion.id }) }}">{{ globalRegion.name }}</a>
-                            {% if globalRegion.id == region.id %}
+                            {% if globalRegion.id == place.region.id %}
                                 <ul>
                                     {% for globalPlace in globalRegion.places %}
                                         <li>
-                                            <a href="{{ url('locality-place', {'id': globalPlace.id}) }}">
+                                            <a {% if globalPlace.id == place.id %}class="active"{% endif %}
+                                               href="{{ url('locality-place', {'id': globalPlace.id}) }}">
+                                                {% if globalPlace.id == place.id %}
+                                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                                {% endif %}
                                                 {% if globalPlace.isLocked %}
                                                     <i class="fa fa-lock" aria-hidden="true"></i>
                                                 {% endif %}
-                                                {{ globalPlace.name }}
+                                                {{ globalPlace.name|raw }}
                                             </a>
                                         </li>
                                     {% endfor %}

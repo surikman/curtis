@@ -7,6 +7,12 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: sk
+    web_dir: '%kernel.root_dir%/../web'
+    images_dir: '%web_dir%/uploads/editor'
+    images_tmp_dir: '%web_dir%/uploads/tmp/editor'
+    image_tmp_web_dir: '/uploads/tmp/editor'
+    image_web_dir: '/uploads/editor'
+
 
 framework:
     #esi:             ~

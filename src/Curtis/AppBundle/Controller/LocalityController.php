@@ -3,6 +3,7 @@
 namespace Curtis\AppBundle\Controller;
 
 use Curtis\AppBundle\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -54,20 +55,21 @@ class LocalityController extends Controller
 
 
     /**
-     * @param $placeId
+     * @Route("/lokalita/miesto/{id}", name="locality-place")
+     * @ParamConverter("place", class="CurtisAppBundle:LocalityPlace")
+     * @param Entity\LocalityPlace $place
      *
-     * @Route("/lokalita/miesto/{placeId}", name="locality-place")
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
      */
-    public function placeAction($placeId)
+    public function placeAction(Entity\LocalityPlace $place)
     {
-
-        $place = $this->getDoctrine()->getRepository(Entity\LocalityPlace::class)->find($placeId);
-        if (!$place) {
-            throw $this->createNotFoundException();
+        $template = '@CurtisApp/Locality/place.html.twig';
+        if ($place->getIsLocked() && !$this->isGranted('ROLE_ADMIN')) {
+            $template = '@CurtisApp/Locality/empty-place.html.twig';
         }
 
-        return $this->render('@CurtisApp/Locality/place.html.twig', [
+        return $this->render($template, [
             'place' => $place,
         ]);
     }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include '@CurtisTemplate/Layout/styles.html.twig' %}
+    {% block stylesheet %}{% endblock %}
+</head>
+
+<!-- Preloader -->
+<div id="preloader">
+    <div id="status">&nbsp;</div>
+</div>
+
+<body>
+
+
+<div class="sb-site-container">
+    <div class="boxed">
+
+        {% include '@CurtisTemplate/Layout/navigation.html.twig' %}
+
+        {% block breadcrumbs %}{% endblock %}
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    {% block body %}{% endblock %}
+                </div> <!-- col-xs-12 -->
+            </div> <!-- row -->
+        </div> <!-- container  -->
+
+        {#{% include '@CurtisTemplate/Layout/footer.html.twig' %}#}
+
+    </div> <!-- boxed -->
+</div> <!-- sb-site -->
+
+
+{% block javascript %}{% endblock %}
+
+<script type="text/javascript" src="{{ asset('bundles/curtistemplate/js/editor/content-tools.min.js') }}"></script>
+
+<script src="{{ asset('bundles/curtistemplate/js/vendors.js') }}"></script>
+
+<!-- Syntaxhighlighter -->
+<script src="{{ asset('bundles/curtistemplate/js/syntaxhighlighter/shCore.js') }}"></script>
+<script src="{{ asset('bundles/curtistemplate/js/syntaxhighlighter/shBrushXml.js') }}"></script>
+<script src="{{ asset('bundles/curtistemplate/js/syntaxhighlighter/shBrushJScript.js') }}"></script>
+
+<script src="{{ asset('bundles/curtistemplate/js/DropdownHover.js') }}"></script>
+<script src="{{ asset('bundles/curtistemplate/js/app.js') }}"></script>
+<script src="{{ asset('bundles/curtistemplate/js/holder.js') }}"></script>
+<script src="{{ asset('bundles/curtistemplate/js/home_full.js') }}"></script>
+
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+</body>
+
+</html>

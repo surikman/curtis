@@ -1,4 +1,5 @@
 <?php
+
 namespace Curtis\AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -390,5 +391,13 @@ class LocalityPlace
     public function getIsLocked()
     {
         return $this->isLocked;
+    }
+
+    /**
+     * @return void
+     */
+    public function toggleLock()
+    {
+        $this->isLocked = $this->isLocked ? false : true;
     }
 }
